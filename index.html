@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>JSON Pagination</title>
+</head>
+<body>
+
+<div class="container mt-4">
+  <h2>JSON Pagination</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>MailId</th>
+        
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation">
+    <ul class="pagination" id="pagination"></ul>
+  </nav>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  // Sample JSON data with 100 items
+  const jsonData = [
+  {"id": 1, "name": "John Doe", "mailid": "john.doe@example.com"},
+  {"id": 2, "name": "Jane Smith", "mailid": "jane.smith@example.com"},
+  {"id": 3, "name": "Bob Johnson", "mailid": "bob.johnson@example.com"},
+  {"id": 4, "name": "Alice Williams", "mailid": "alice.williams@example.com"},
+  {"id": 5, "name": "Charlie Brown", "mailid": "charlie.brown@example.com"},
+  {"id": 6, "name": "Emma Davis", "mailid": "emma.davis@example.com"},
+  {"id": 7, "name": "Frank Wilson", "mailid": "frank.wilson@example.com"},
+  {"id": 8, "name": "Grace Miller", "mailid": "grace.miller@example.com"},
+  { "id": 9, "name": "John Doe", "mailid": "john.doe@example.com" },
+  { "id": 10, "name": "Jane Smith", "mailid": "jane.smith@example.com" },
+  { "id": 11, "name": "Bob Johnson", "mailid": "bob.johnson@example.com" },
+  { "id": 12, "name": "Alice Brown", "mailid": "alice.brown@example.com" },
+  { "id": 13, "name": "Charlie Davis", "mailid": "charlie.davis@example.com" },
+  { "id": 14, "name": "Eva White", "mailid": "eva.white@example.com" },
+  { "id": 15, "name": "Michael Lee", "mailid": "michael.lee@example.com" },
+  { "id": 16, "name": "Olivia Turner", "mailid": "olivia.turner@example.com" },
+  { "id": 17, "name": "Ryan Mitchell", "mailid": "ryan.mitchell@example.com" },
+  { "id": 18, "name": "Sophia Baker", "mailid": "sophia.baker@example.com" },
+  {"id": 19, "name": "Henry Thomas", "mailid": "henry.thomas@example.com"},
+  {"id": 20, "name": "Isabel Lee", "mailid": "isabel.lee@example.com"},
+  {"id": 21, "name": "Victor Evans", "mailid": "victor.evans@example.com"},
+  {"id": 22, "name": "Wendy Reed", "mailid": "wendy.reed@example.com"},
+  {"id": 23, "name": "Xavier Perez", "mailid": "xavier.perez@example.com"},
+  {"id": 24, "name": "Yvonne Cooper", "mailid": "yvonne.cooper@example.com"},
+  {"id": 25, "name": "Zane Mitchell", "mailid": "zane.mitchell@example.com"},{"id": 1, "name": "John Doe", "mailid": "john.doe@example.com"},
+  {"id": 26, "name": "Jane Smith", "mailid": "jane.smith@example.com"},
+  {"id": 27, "name": "Bob Johnson", "mailid": "bob.johnson@example.com"},
+  {"id": 28, "name": "Alice Williams", "mailid": "alice.williams@example.com"},
+  {"id": 29, "name": "Charlie Brown", "mailid": "charlie.brown@example.com"},
+  {"id": 30, "name": "Emma Davis", "mailid": "emma.davis@example.com"},
+  {"id": 31, "name": "Frank Wilson", "mailid": "frank.wilson@example.com"},
+  {"id": 32, "name": "Grace Miller", "mailid": "grace.miller@example.com"},
+  { "id":33, "name": "John Doe", "mailid": "john.doe@example.com" },
+  { "id": 34, "name": "Jane Smith", "mailid": "jane.smith@example.com" },
+  { "id": 35, "name": "Bob Johnson", "mailid": "bob.johnson@example.com" },
+  { "id": 36, "name": "Alice Brown", "mailid": "alice.brown@example.com" },
+  { "id": 37, "name": "Charlie Davis", "mailid": "charlie.davis@example.com" },
+  { "id": 38, "name": "Eva White", "mailid": "eva.white@example.com" },
+  { "id": 39, "name": "Michael Lee", "mailid": "michael.lee@example.com" },
+  { "id": 40, "name": "Olivia Turner", "mailid": "olivia.turner@example.com" },
+  { "id": 41, "name": "Ryan Mitchell", "mailid": "ryan.mitchell@example.com" },
+  {"id": 42, "name": "John Doe", "mailid": "john.doe@example.com"},
+  {"id": 43, "name": "Jane Smith", "mailid": "jane.smith@example.com"},
+  {"id": 44, "name": "Bob Johnson", "mailid": "bob.johnson@example.com"},
+  {"id": 45, "name": "Alice Williams", "mailid": "alice.williams@example.com"},
+  {"id": 46, "name": "Charlie Brown", "mailid": "charlie.brown@example.com"},
+  {"id": 47, "name": "Emma Davis", "mailid": "emma.davis@example.com"},
+  {"id": 48, "name": "Frank Wilson", "mailid": "frank.wilson@example.com"},
+  {"id": 49, "name": "Grace Miller", "mailid": "grace.miller@example.com"},
+  { "id": 50, "name": "John Doe", "mailid": "john.doe@example.com" },
+  { "id": 51, "name": "Jane Smith", "mailid": "jane.smith@example.com" },
+  { "id": 52, "name": "Bob Johnson", "mailid": "bob.johnson@example.com" },
+  { "id": 53, "name": "Alice Brown", "mailid": "alice.brown@example.com" },
+  { "id": 54, "name": "Charlie Davis", "mailid": "charlie.davis@example.com" },
+  { "id": 55, "name": "Eva White", "mailid": "eva.white@example.com" },
+  { "id": 56, "name": "Michael Lee", "mailid": "michael.lee@example.com" },
+  { "id": 57, "name": "Olivia Turner", "mailid": "olivia.turner@example.com" },
+  { "id": 58, "name": "Ryan Mitchell", "mailid": "ryan.mitchell@example.com" },
+  {"id":59, "name": "John Doe", "mailid": "john.doe@example.com"},
+  {"id": 60, "name": "Jane Smith", "mailid": "jane.smith@example.com"},
+  {"id": 61, "name": "Bob Johnson", "mailid": "bob.johnson@example.com"},
+  {"id": 62, "name": "Alice Williams", "mailid": "alice.williams@example.com"},
+  {"id": 63, "name": "Charlie Brown", "mailid": "charlie.brown@example.com"},
+  {"id": 64, "name": "Emma Davis", "mailid": "emma.davis@example.com"},
+  {"id": 65, "name": "Frank Wilson", "mailid": "frank.wilson@example.com"},
+  {"id": 66, "name": "Grace Miller", "mailid": "grace.miller@example.com"},
+  { "id": 67, "name": "John Doe", "mailid": "john.doe@example.com" },
+  { "id": 68, "name": "Jane Smith", "mailid": "jane.smith@example.com" },
+  { "id": 69, "name": "Bob Johnson", "mailid": "bob.johnson@example.com" },
+  { "id": 70, "name": "Alice Brown", "mailid": "alice.brown@example.com" },
+  { "id": 71, "name": "Charlie Davis", "mailid": "charlie.davis@example.com" },
+  { "id": 72, "name": "Eva White", "mailid": "eva.white@example.com" },
+  { "id": 73, "name": "Michael Lee", "mailid": "michael.lee@example.com" },
+  { "id": 74, "name": "Olivia Turner", "mailid": "olivia.turner@example.com" },
+  { "id": 75, "name": "Ryan Mitchell", "mailid": "ryan.mitchell@example.com" }
+
+]; 
+
+  
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(jsonData.length / itemsPerPage);
+
+  function displayPage(page) {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageData = jsonData.slice(startIndex, endIndex);
+
+    $('#tableBody').empty();
+
+    pageData.forEach(item => {
+      $('#tableBody').append(`
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${item.mailid}</td>
+          <!-- Add other cells as needed -->
+        </tr>
+      `);
+    });
+  }
+
+  function generatePagination() {
+    const paginationElement = $('#pagination');
+    paginationElement.empty();
+
+    for (let i = 1; i <= totalPages; i++) {
+      paginationElement.append(`
+        <li class="page-item">
+          <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+        </li>
+      `);
+    }
+  }
+
+  function changePage(page) {
+    displayPage(page);
+    $('#pagination li').removeClass('active');
+    $('#pagination li:nth-child(' + page + ')').addClass('active');
+  }
+
+  displayPage(1);
+  generatePagination();
+</script>
+
+</body>
+</html>
